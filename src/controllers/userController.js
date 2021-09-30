@@ -2,13 +2,15 @@ const rescue = require('express-rescue');
 const userService = require('../services/userService');
 
 const addUser = rescue(async (req, res) => {
-  const result = await userService.addUsers(req.body.email, req.body.password, req.body.name);
-  if (result.message) {
-    return res.status(result.status).json(
-      { message: result.message },
+  const response = await userService.addUsers(req.body.email, req.body.password, req.body.name);
+  if (response.message) {
+    return res.status(response.status).json(
+      { message: response.message },
     );
   }
-return res.status(201).json(result);
+  return res.status(201).json(response);
 });
 
-module.exports = { addUser };
+module.exports = {
+  addUser,
+};
