@@ -25,7 +25,35 @@ const getByEmail = async (email) => {
   }
 };
 
+const loginValidator = async (email, password) => {
+  const db = await connection();
+  const emailValidator = await db.collection('users')
+    .findOne({ email, password });
+
+  if (!emailValidator) {
+    return emailValidator;
+  }
+};
+
+const addAdmin = async (email, password, name) => {
+  const db = await connection();
+
+  const admin = await db.collection('users')
+    .insertOne({ name, email, password, role: 'admin' });
+
+  return {
+    user: {
+      name,
+      email,
+      role: 'admin',
+      _id: admin.insertedId,
+    },
+  };
+};
+
 module.exports = {
   addUser,
-  getByEmail, 
+  getByEmail,
+  loginValidator,
+  addAdmin,
 };

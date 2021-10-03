@@ -42,4 +42,52 @@ const addUser = async (email, password, name) => {
   return register;
 };
 
-module.exports = { addUser };
+const fieldsValidator = async (email, password) => {
+  const { error } = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }).validate({ email, password });
+
+    if (error) {
+      return {
+        status: 401,
+        message: 'All fields must be filled',
+      };
+     }
+    return false;
+};
+
+const loginValidator = async (email, password) => {
+  const invalidFields = await fieldsValidator(email, password);
+
+  if (invalidFields) {
+    return invalidFields;
+  }
+  const invalidLogin = await userModel.loginValidator(email, password);
+
+  if (invalidLogin) {
+    return { 
+      status: 401,  
+      message: 'Incorrect username or password',
+    };
+  }
+  return invalidLogin;
+};
+
+const addAdmin = async (email, password, name, role) => {
+  if (role !== 'admin') {
+    return {
+      status: 403,
+      message: 'Only admins can register new admins',
+    };
+  }
+  const mail = await userModel.addAdmin(email, password, name);
+
+  return mail;
+};
+
+module.exports = {
+  addUser,
+  loginValidator,
+  addAdmin,
+};
