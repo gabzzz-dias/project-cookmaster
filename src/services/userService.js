@@ -74,20 +74,20 @@ const loginValidator = async (email, password) => {
   return invalidLogin;
 };
 
-const addAdmin = async (email, password, name, role) => {
-  if (role !== 'admin') {
-    return {
-      status: 403,
-      message: 'Only admins can register new admins',
-    };
-  }
-  const mail = await userModel.addAdmin(email, password, name);
+// const addAdmin = async (email, password, name, role) => {
+//   if (role !== 'admin') {
+//     return {
+//       status: 403,
+//       message: 'Only admins can register new admins',
+//     };
+//   }
+//   const mail = await userModel.addAdmin(email, password, name);
 
-  return mail;
-};
+//   return mail;
+// };
 
 module.exports = {
   addUser,
   loginValidator,
-  addAdmin,
+  // addAdmin,
 };

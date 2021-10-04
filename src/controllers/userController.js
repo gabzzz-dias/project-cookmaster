@@ -34,19 +34,19 @@ const loginValidator = rescue(async (req, res) => {
   return res.status(200).json({ token });
 });
 
-const addAdmin = rescue(async (req, res) => {
-  const { email, password, name } = req.body;
-  const { role } = req.user;
-  const response = await userService.addAdmin(email, password, name, role);
+// const addAdmin = rescue(async (req, res) => {
+//   const { email, password, name } = req.body;
+//   const { role } = req.user;
+//   const response = await userService.addAdmin(email, password, name, role);
 
-  if (response.message) {
-    return res.status(response.status).json({ message: response.message });
-  }
-  return res.status(201).json(response);
-});
+//   if (response.message) {
+//     return res.status(response.status).json({ message: response.message });
+//   }
+//   return res.status(201).json(response);
+// });
 
 module.exports = {
   addUser,
   loginValidator,
-  addAdmin,
+  // addAdmin,
 };
