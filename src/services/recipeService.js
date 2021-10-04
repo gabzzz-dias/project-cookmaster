@@ -1,66 +1,64 @@
-// const Joi = require('joi');
-// const recipeModel = require('../models/recipeModel');
+const Joi = require('joi');
+const recipeModel = require('../models/recipeModel');
 
-// const recipeValidator = async (name, ingredients, preparation) => {
-//   const { error } = Joi.object({
-//     name: Joi.string().required(),
-//     ingredients: Joi.string().required(), 
-//     preparation: Joi.string().required(),
-//     }).validate({ name, ingredients, preparation });
+const recipeValidator = async (name, ingredients, preparation) => {
+  const { error } = Joi.object({
+    name: Joi.string().required(),
+    ingredients: Joi.string().required(), 
+    preparation: Joi.string().required(),
+    }).validate({ name, ingredients, preparation });
 
-//     if (error) {
-//       return error;
-//     }
+  if (error) {
+    return error;
+  }
+  return false;
+};
 
-//     return false;
-// };
+const addRecipe = async (name, ingredients, preparation, userId) => {
+  const validFields = await recipeValidator(name, ingredients, preparation);
 
-// const addRecipe = async (name, ingredients, preparation, userId) => {
-//   const invalidFields = await recipeValidator(name, ingredients, preparation);
+  if (validFields) {
+    return {
+      status: 400,
+      message: 'Invalid entries. Try again.',
+    }; 
+  }
+  const newRecipe = await recipeModel.addRecipe(name, ingredients, preparation, userId);
 
-//   if (invalidFields) {
-//     return {
-//       status: 400,
-//       message: 'Invalid entries. Try again.',
-//     }; 
-//   }
-//   const addedRecipe = await recipeModel.addRecipe(name, ingredients, preparation, userId);
+  return newRecipe;
+};
 
-//   return addedRecipe;
-// };
+const getRecipes = async () => recipeModel.getRecipes();
 
-// const getRecipes = async () => recipeModel.getRecipes();
+const getRecipe = async (id) => {
+  const oneRecipe = await recipeModel.getRecipe(id);
 
-// const getRecipe = async (id) => {
-//   const recipe = await recipeModel.getRecipe(id);
+  if (!oneRecipe) {
+    return {
+      status: 404,
+      message: 'recipe not found',
+    }; 
+  }
+  return oneRecipe;
+}; 
 
-//   if (!recipe) {
-//     return {
-//       status: 404,
-//       message: 'recipe not found',
-//     }; 
-//   }
+const updateRecipe = async (body, id, _userId) => {
+  const update = await recipeModel.updateRecipe(body, id, _userId);
 
-//   return recipe;
-// }; 
+  return update;
+};
 
-// const updateRecipe = async (body, id, _userId) => {
-//   const update = await recipeModel.updateRecipe(body, id, _userId);
+const deleteRecipe = async (id) => {
+  await recipeModel.deleteRecipe(id);
+};
 
-//   return update;
-// };
+const insertImg = async (id, file, _userId) => recipeModel.insertImg(id, file, _userId);
 
-// const deleteRecipe = async (id) => {
-//   await recipeModel.deleteRecipe(id);
-// };
-
-// const insertImg = async (id, file, _userId) => recipeModel.insertImg(id, file, _userId);
-
-// module.exports = { 
-//   addRecipe,
-//   getRecipes,
-//   getRecipe,
-//   updateRecipe,
-//   deleteRecipe,
-//   insertImg,
-//  };
+module.exports = { 
+  addRecipe,
+  getRecipes,
+  getRecipe,
+  updateRecipe,
+  deleteRecipe,
+  insertImg,
+ };
