@@ -37,3 +37,7 @@ app.put('/recipes/:id/image',
   recipeController.insertImg);
 
 module.exports = app;
+
+// Obtive ajuda de dois grandes amigos do curso para resolver esse projeto. Para os requisitos, tive ajuda do Gabriel Essenio, que me ajudou a entender o multer e a resolucao de alguns requisitos. E com os testes obtive ajuda do Leandro Reis, onde percebi que desenvolver testes nao 'e tao complicado quanto parece. Deixo aqui minha nota de agradecimento aos dois, sem voces eu nao teria conseguido!
+// PR Gabriel Essenio: https://github.com/tryber/sd-010-b-cookmaster/pull/101
+// PR Leandro Reis: https://github.com/tryber/sd-010-b-cookmaster/pull/43
